@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "dengliwei.com/add_client/proto";
+
+
+
+// 定义服务
+service CalcService{
+    rpc Add(AddRequest)returns(AddReponse){
+    }
+} 
+
+// 定义messagez消息
+message AddRequest{
+    int32 x=1;
+    int32 y=2;
+}
+
+message AddReponse{
+    int64 result=1;
+}

@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+option go_package = "bookstore/pb";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service Bookstore{
+    // 返回所有书架的列表
+    rpc ListShelves(google.protobuf.Empty) returns (ListShelvesResponse){
+        //定义HTTP映射
+        option (google.api.http) = { 
+            get : "/v1/shelves"
+        };
+    }
+
+      // 返回书架上的所有图书
+      rpc ListBooks(ListBooksRequest) returns (ListBooksResponse){
+        //定义HTTP映射
+        option (google.api.http) = { 
+            get : "/v1/shelves/{shelf}/books"
+        };
+    }
+
+    // 创建一个新的书架
+    rpc CreateShelf(CreateShelfRequest) returns (Shelf){
+        option (google.api.http) = {
+            post: "/v1/shelves"
+            body: "shelf"
+        };
+    }
+
+    // 返回书店指定的书架
+    rpc GetShelf(GetShelfRequest) returns (Shelf){
+        option (google.api.http) ={
+            get : "/v1/shelves/{shelf}"
+        };
+    }
+
+    // 删除书架,包括书架上的所有图书
+    rpc DeleteShelf(DeleteShelfRequest) returns (google.protobuf.Empty){
+        option (google.api.http) = {
+            delete: "/v1/shelves/{shelf}"
+        };
+    }
+
+    // 创建一本新图书
+    rpc CreateBook(CreateBookRequest) returns (Book){
+        option (google.api.http) = {
+            post: "/v1/shelves/{shelf}/books"
+        };
+    }
+
+     // 返回特定的图书
+     rpc GetBook(GetBookRequest) returns (Book){
+        option (google.api.http) ={
+            get : "/v1/shelves/{shelf}/books/{book}"
+        };
+    }
+
+    // 从书架上删除书
+    rpc DeleteBook(DeleteBookRequest) returns (google.protobuf.Empty){
+        option (google.api.http) = {
+            delete: "/v1/shelves/{shelf}/books/{book}"
+        };
+    }
+}
+
+// 书架
+message Shelf {
+    int64 id =1;
+    string theme =2;
+    int64 size =3;
+}
+
+// 书
+message Book {
+    int64 id=1;
+    string author =2;
+    string tite = 3;
+}
+
+// ListShelves 返回响应消息
+message ListShelvesResponse{
+    //书店里的书架
+    repeated Shelf shelves =1;
+}
+
+// CreateShelf 方法中请求的方法
+message CreateShelfRequest{
+    // 创建书架
+    Shelf shelf =1;
+}
+
+// GetShelf 方法的请求消息
+message GetShelfRequest{
+    // 检索的书架id
+    int64 shelf = 1;
+}
+
+// DeleteShelf 方法请求
+message DeleteShelfRequest{
+    int64 shelf =1;
+}
+
+// ListBook 请求方法
+message ListBooksRequest{
+    int64 shelf =1;
+    string page_token=2;
+}
+
+//ListBook 回复方法
+message ListBooksResponse{
+    // 书架上的书
+    repeated Book books=1;
+    string next_page_token=2; // 下一页的token
+}
+
+// Createbook 请求方法
+message CreateBookRequest{
+    int64 shelf=1;
+    int64 book=2;
+}
+
+// GetBook 请求方法
+message GetBookRequest{
+    int64 shelf =1;
+    int64 book =2;
+}
+// DeleteBook 请求方法
+message DeleteBookRequest{
+    int64 shelf =1;
+    int64 book=2;
+}
