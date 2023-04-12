@@ -1,0 +1,22 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+
+Log: 
+  ServiceName: "user-srv"
+  Mode: consle
+  Encoding: json
+  Path: logs
+  Level: info
+  Stat: true
+
+Mysql:
+  DataSource: root:root@tcp(127.0.0.1:3306)/ttest?parseTime=true
+
+CacheRedis:
+  - Host: 124.221.24.216:6379
+  - Pass: dengliwei
+
+Auth:
+  AccessSecret: dengliwei
+  AccessExpire: 60

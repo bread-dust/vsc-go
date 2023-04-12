@@ -7,7 +7,7 @@ cc := &ClientConn{
 }
 
 // ParseTarget 解析这个target
-func ParseTarget(target string) (ret resolver.vartarget)
+func ParseTarget(target string) (ret resolver.vartarget){
 	var ok bool
 	ret.Scheme,ret.Endpoint,ok=split2(target,"://")
 	if !ok{

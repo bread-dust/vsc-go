@@ -16,10 +16,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const (
-	GRPCLISTEN = ":8972"
-	HTTPLISTEN = ":8090"
-)
 func main() {
 	// 连接数据库
 	db,err := NewDB()
@@ -34,7 +30,7 @@ func main() {
 	}
 	//定义gRPC服务
 	//监听端口
-	l,err:=net.Listen("tcp",GRPCLISTEN)
+	l,err:=net.Listen("tcp",":8099")
 	if err!=nil{
 		fmt.Printf("failed listen:%v",err)
 		return
@@ -48,7 +44,7 @@ func main() {
 	// 新建一个grpc handler gwmux将请求交给GRPCLISTEN处理
 	gwmux := runtime.NewServeMux()
 	dops:= []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = pb.RegisterBookstoreHandlerFromEndpoint(context.Background(),gwmux,GRPCLISTEN,dops)
+	err = pb.RegisterBookstoreHandlerFromEndpoint(context.Background(),gwmux,":8099",dops)
 	if err!=nil{
 		log.Fatal("failed to register service to gwmux")
 	}
@@ -56,9 +52,9 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/",gwmux)
 
-	// 定义HTTP server 配置
+	// 定义gateway 配置
 	gwServer := &http.Server{
-		Addr: HTTPLISTEN,
+		Addr: ":8099",
 		Handler: grpcHandlerFunc(s,mux), //请求的统一入口
 	}
 	// 开始grpc_gateway服务

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package register;
+
+option go_package = "./register";
+
+message RegReq{
+    string username=1;
+    string password=2;
+    CaptchaReq captcha=3; //人机验证
+    string phone=4;
+    string promotion=5; //邀请码
+    string code=6;  //验证码
+    string country=7;
+    string superPartner=8;
+}
+
+message CaptchaReq{
+    string server=1;
+    string token=2;
+}
+
+message RegRes{
+
+}
+
+service Register{
+    rpc registerByphone(RegReq) returns (RegRes);
+}

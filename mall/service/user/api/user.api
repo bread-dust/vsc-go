@@ -1,0 +1,57 @@
+syntax = "v1"
+
+info(
+	title: "go-zero学习项目"
+	desc: "学习"
+	author: "deng"
+	email: @dengliwei.cn
+	version: 1.0
+)
+
+@server (
+	prefix:api
+)
+
+service user-api {
+	@handler SignupHandler
+	post /user/signup(SignupRequest) returns (SignupResponse)
+	@handler LoginHandler
+	post /user/login(LoginRequest) returns(LoginResponse)
+}
+
+type SignupRequest {
+	Username   string `path:"name,options=dengliwei|no"`
+	Password   string `form:"password"`
+	Gender     int    `json:"gender,options=0|1|2,default=0"`
+	RePassword string `form:"re_password"`
+}
+
+type SignupResponse {
+	Message string `json:"message"`
+}
+
+type LoginRequest {
+	Username   string `path:"name,options=dengliwei|no"`
+	Password   string `form:"password"`
+	Gender     int    `json:"gender,options=0|1|2,default=0"`
+	RePassword string `form:"re_password"`
+}
+
+type LoginResponse {
+	Message string `json:"message"`
+	AccessToken string `json:"accessToken"`
+	AccessExpire int  `json:"accessExpire"`
+	RefreshAfter int `json:"refreshAfter"`
+}
+
+
+@server(
+	jwt:Auth //调用jwt
+	middlewawre:Cost //自定义中间件
+)
+
+service user-api {
+	@handler DetailHandler
+	get /user/detail(DetailRequest) returns(DetailResponse)
+	
+}
