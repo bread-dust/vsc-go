@@ -15,12 +15,14 @@ import (
 
 const TokenExpireDuration = time.Hour * 24 * 365
 
+// mySecret 签名
 var mySecret = []byte("dengliwei")
 
+// MyClaims 自定义声明
 type MyClaims struct {
 	UserID   int64  `json:"user_id"`
 	Username string `json:"username"`
-	jwt.StandardClaims
+	jwt.StandardClaims //标准声明
 }
 
 // GenToken 生成token
@@ -37,7 +39,7 @@ func GenToken(userID int64, username string) (string, error) {
 		},
 	}
 
-	// 使用指定签名方法创造签名对象
+	// 使用指定签名方法创造签名对象 Token{Raw,Method,Header,Claims,Signature,Valid}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
 	// 使用指定secret签名并获得完整编码后的token
 	return token.SignedString(mySecret)
@@ -56,5 +58,4 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 		return claims, nil
 	}
 	return nil, errors.New("invalid Token")
-
 }

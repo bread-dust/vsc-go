@@ -29,13 +29,13 @@ func Init(cfg *settings.LogConfig, mode string) (err error) {
 	writeSyncer := getLogWriter(
 		cfg.Filename,
 		cfg.MaxSize,
-		cfg.MaxBackups,
-		cfg.MaxAge,
+		cfg.MaxBackups, //最多保留备份个数
+		cfg.MaxAge, // 文件最多保存多少天
 	)
 	//编码器
 	encoder := getEncoder() 
 	//日志等级
-	var l = new(zapcore.Level)                                  //创建日志等级
+	var l = new(zapcore.Level)  //创建日志等级
 	err = l.UnmarshalText([]byte(viper.GetString("log.level"))) //
 	if err != nil {
 		return

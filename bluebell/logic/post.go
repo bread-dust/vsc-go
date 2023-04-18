@@ -24,6 +24,8 @@ func CreatePost(p *models.Post) (err error) {
 	if err!=nil{
 		return err
 	}
+	
+	// 创建时间
 	err = redis.CreatePost(p.ID, p.CommunityID)
 	if err!=nil{
 		return err
@@ -41,7 +43,8 @@ func GetPostById(pid int64) (data *models.ApiPostDetail, err error) {
 		zap.L().Error("mysql.GetPostById(pid)", zap.Error(err))
 		return
 	}
-
+	println(post)
+	println(post.AuthorID)
 	// 根据author_id 查询作者信息
 	user, err := mysql.GetUserById(post.AuthorID)
 	if err != nil {
@@ -89,7 +92,7 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 	return
 }
 
-// GetPostList2
+// GetPostList2 根据发帖时间或分数查询帖子列表
 func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 去redis查询id列表
 	ids, err := redis.GetPostIDsInOrder(p)
@@ -97,6 +100,7 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		return
 	}
 
+	// id为0
 	if len(ids) == 0 {
 		zap.L().Warn("redis GetPostlist")
 	}

@@ -7,13 +7,13 @@
 
 package redis
 
-// redis key
+// redis key 
 // redis key注意使用命名空间，方便业务拆分
 
 const (
 	KeyPrefix             = "bluebell:"   // 项目key前缀
-	KeyPostTimeZSet       = "post:time"   // zset帖子以发帖时间为分数
-	KeyPostScoreZse       = "post:score"  // zset 帖子及投票的分数
+	KeyPostTimeZSet       = "post:time"   // zset;帖子及发帖时间
+	KeyPostScoreZset       = "post:score"  // zset 帖子及投票的分数
 	KeyPostVoteZSetPrefix = "post:voted:" //zset记录用户及投票类型；参数是post_id
 	KeyCommunityStPrefix  = "community:"  //set;保存每个分区下的帖子
 )

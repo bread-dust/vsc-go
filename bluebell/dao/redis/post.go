@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func getIDsFromKey(key string, page, size int64) ([]string, error) {
+func GetIDsFromKey(key string, page, size int64) ([]string, error) {
 	// 确定查询的索引起始点
 	start := (page - 1) * size
 	end := start + size - 1
@@ -22,16 +22,18 @@ func getIDsFromKey(key string, page, size int64) ([]string, error) {
 	// ZREVRANGE 查询 按分数从大到小的顺序查询指定数量的元素
 	return rdb.ZRevRange(key, start, end).Result()
 }
+
+
 func GetPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 	// 从redis获取id
-	// 根据用户请求中携带的参数
+	// 根据用户请求中携带的order参数
 	key := getRedisKey(KeyPostTimeZSet)
 	if p.Order == models.OrderScore {
-		key = getRedisKey(KeyPostScoreZse)
+		key = getRedisKey(KeyPostScoreZset)
 	}
 
 	// 确定查询的索引起始点
-	return getIDsFromKey(key, p.Page, p.Size)
+	return GetIDsFromKey(key, p.Page, p.Size)
 }
 
 // GetPostVoteData 根据ids查询每篇帖子的投赞成票的数据
@@ -69,7 +71,7 @@ func GetCommunityPostIDsInOrder(p *models.ParamCommunityPostList) ([]string, err
 	// 利用缓存key减少zintersore 执行的次数
 	orderKey := getRedisKey(KeyPostTimeZSet)
 	if p.Order == models.OrderScore {
-		orderKey = getRedisKey(KeyPostScoreZse)
+		orderKey = getRedisKey(KeyPostScoreZset)
 	}
 
 	key := orderKey + strconv.Itoa(int(p.CommunityID))
@@ -90,6 +92,6 @@ func GetCommunityPostIDsInOrder(p *models.ParamCommunityPostList) ([]string, err
 	}
 
 	// 存在的话根据key查ids
-	return getIDsFromKey(key, p.Page, p.Size)
+	return GetIDsFromKey(key, p.Page, p.Size)
 
 }

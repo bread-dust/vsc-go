@@ -30,7 +30,7 @@ func CommunityHandler(c *gin.Context) {
 func CommunityDetailHandler(c *gin.Context) {
 	// 获取社区ID
 	idStr := c.Param("id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
+	id, err := strconv.ParseInt(idStr, 10, 64) //10进制，64位
 	if err != nil {
 		ResponseError(c, CodeInvalidParam)
 		return

@@ -51,8 +51,8 @@ func main() {
 		fmt.Printf("init mysql err:%v\n", err)
 	}
 	defer mysql.Close()
+	
 	// 4. 初始化 Redis
-
 	if err := redis.Init(settings.Conf.RedisConfig); err != nil {
 		fmt.Printf("init redis err:%v\n", err)
 	}

@@ -25,6 +25,7 @@ type ResponseData struct {
 	Data any     `json:"data,omitempty"`
 }
 
+// ResponseError 不带信息的响应错误
 func ResponseError(c *gin.Context, code ResCode) {
 	c.JSON(http.StatusOK, &ResponseData{
 		Code: code,
@@ -33,6 +34,7 @@ func ResponseError(c *gin.Context, code ResCode) {
 	})
 }
 
+// ResponseErrorWithMsg 自定义带信息的响应错误
 func ResponseErrorWithMsg(c *gin.Context, code ResCode, msg any) {
 	c.JSON(http.StatusOK, &ResponseData{
 		Code: code,
@@ -41,6 +43,7 @@ func ResponseErrorWithMsg(c *gin.Context, code ResCode, msg any) {
 	})
 }
 
+// ResponseSuccess 自定义响应成功信息
 func ResponseSuccess(c *gin.Context, data any) {
 	c.JSON(http.StatusOK, &ResponseData{
 		Code: CodeSuccess,

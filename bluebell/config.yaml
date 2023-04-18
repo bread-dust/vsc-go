@@ -22,7 +22,7 @@ mysql:
   max_idle_conn:  100
 
 redis:
-  host: "192.168.56.128"
+  host: "192.168.56.136"
   port: 6379
   password: "dengliwei"
   db: 0

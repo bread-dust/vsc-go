@@ -29,7 +29,7 @@ type ParamLogin struct {
 // ParamVote 投票参数
 type ParamVoteData struct {
 	// UserId 请求中获得
-	PostID    string `json:"post_id,string"`                          //帖子id
+	PostID    int64 `json:"post_id,string"`                          //帖子id
 	Direction int    `json:"direction,string" binding:"oneof=1 0 -1"` //赞成票(1) 反对票(-1) 取消投票(0)
 }
 

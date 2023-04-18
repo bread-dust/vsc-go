@@ -20,6 +20,7 @@ const (
 	CodeNeedLogin
 )
 
+// 自定义错误码对应的错误信息
 var codeMsgMap = map[ResCode]string{
 	CodeSuccess:         "success",
 	CodeInvalidParam:    "请求参数错误",
@@ -31,6 +32,7 @@ var codeMsgMap = map[ResCode]string{
 	CodeNeedLogin:       "需要登录",
 }
 
+// Msg 返回错误码对应的错误信息
 func (c ResCode) Msg() string {
 	msg, ok := codeMsgMap[c]
 	if !ok {

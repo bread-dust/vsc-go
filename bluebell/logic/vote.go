@@ -9,9 +9,11 @@ package logic
 
 import (
 	"dao/redis"
+	"fmt"
 	"models"
-	"go.uber.org/zap"
 	"strconv"
+
+	"go.uber.org/zap"
 )
 
 // 投票功能：
@@ -39,9 +41,13 @@ durection=-1，两种情况
 
 // VoteForPost 为帖子投票的函数
 func VoteForPost(userID int64, p *models.ParamVoteData) error {
+	postIDString:= strconv.Itoa(int(p.PostID))
+	userIDString:= strconv.Itoa(int(userID))
 	zap.L().Debug("voteforPost",
-		zap.Int64("userid", userID),
-		zap.String("postid", p.PostID))
-	return redis.VoteForPost(strconv.Itoa(int(userID)), p.PostID, float64(p.Direction))
+		zap.String("userid", userIDString),
+		zap.String("postid", postIDString),
+		zap.Int("direction", p.Direction))
+	fmt.Println(p.Direction)
+	return redis.VoteForPost(userIDString, postIDString, float64(p.Direction))
 
 }

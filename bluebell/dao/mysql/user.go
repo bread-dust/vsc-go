@@ -15,6 +15,7 @@ import (
 	"errors"
 )
 
+// md5加密盐值
 const secret = "myblog"
 
 var (
@@ -46,7 +47,7 @@ func InsertUser(user *models.User) (err error) {
 	return
 }
 
-// encryptPassword 加密
+// encryptPassword md5加密
 func encryptPassword(oPassword string) string {
 	h := md5.New()
 	h.Write([]byte(secret))
@@ -54,6 +55,7 @@ func encryptPassword(oPassword string) string {
 
 }
 
+// Login 用户登录
 func Login(user *models.User) (err error) {
 	oPassword := user.Password //用户登录密码
 	sqlStr := `select user_id,username,password from user where username=?`

@@ -8,8 +8,10 @@
 package controllers
 
 import (
+	"fmt"
 	"logic"
 	"models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -32,24 +34,22 @@ func PostVoteController(c *gin.Context) {
 			ResponseError(c, CodeInvalidParam)
 			return
 		}
+
 		errData := removeTopStruct(errs.Translate(trans)) // 翻译并去除错误中的结构体
 		ResponseErrorWithMsg(c, CodeInvalidParam, errData)
-
-		// 获取当前用户的id
-		userID, err := GetCurrentUser(c)
-		if err != nil {
-			ResponseError(c, CodeInvalidParam)
-		}
-
-		// 具体投票的业务逻辑
-		if err := logic.VoteForPost(userID, p); err != nil {
-			zap.L().Error("logic vote failed", zap.Error(err))
-
-		}
-
+	}
+	// 获取当前用户的id
+	userID, err := GetCurrentUser(c)
+	if err != nil {
+		ResponseError(c, CodeInvalidParam)
+	}
+	fmt.Println(p.Direction)
+	fmt.Println("errorserrs")
+	// 具体投票的业务逻辑
+	if err := logic.VoteForPost(userID, p); err != nil {
+		zap.L().Error("logic vote failed", zap.Error(err))
 		ResponseError(c, CodeServerVeryBusy)
 		return
 	}
 	ResponseSuccess(c, nil)
-
 }
