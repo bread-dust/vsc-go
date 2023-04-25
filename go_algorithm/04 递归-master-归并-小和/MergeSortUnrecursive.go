@@ -9,15 +9,12 @@ func sortArrayUnrecursive(arr []int) []int {
     mergeSize := 1 // 步长1,2,4,8,16...
     for mergeSize < n { //步长>n已经排好序
         l := 0 // 左组位置
-        for l < n {
+        for l < n { //后面还有左右对
             if mergeSize >= n-l { // 右组不够了，不用合并了
                 break
             }
             m := l + mergeSize - 1
-            r := m + mergeSize // 右组位置
-            if r > n-1 {
-                r = n - 1
-            }
+            r := m + min(mergeSize,n-m-1) // 右组边界位置
             merge(arr, help, l, m, r)
             l = r + 1 // 下一组
         }

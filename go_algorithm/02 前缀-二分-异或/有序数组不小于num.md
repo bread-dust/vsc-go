@@ -12,26 +12,3 @@ bsNearLeft
       2.  false
           1.  左边界右移，l=m+1
 4. 循环结束，返回ans
-
-```go 
-func moreEqualMostLeft(arr []int, val int) int {
-	if arr == nil || len(arr) == 0 {
-		return -1
-	}
-	l := 0
-	r := len(arr) - 1
-	ans := -1
-	for l <= r {
-		m := l + (r-1)>>1
-		if arr[m] >= val {
-			ans = m
-			r = m - 1
-		} else {
-			l = m + 1
-		}
-		return ans
-	}
-}
-
-```
-

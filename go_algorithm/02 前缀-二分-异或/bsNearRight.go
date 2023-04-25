@@ -18,10 +18,10 @@ func moreEqualMostLeft(arr []int, val int) int {
 	for l <= r {
 		m := l + (r-1)>>1
 		if arr[m] >= val {
-			ans = m
-			r = m - 1
+			ans = m // m的极限  -> val
+			r = m - 1 // r的极限 -> val-1
 		} else {
-			l = m + 1
+			l = m + 1 // l 的极限 -> val+1
 		}
 	}
 	return ans

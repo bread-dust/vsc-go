@@ -7,25 +7,48 @@
 
 package main
 
-import "fmt"
+import (
+	"container/list"
+)
 
 // hushMap 建立hasgMap
-func hushMap() {
-	nameAgeMap := make(map[string]int)
-	nameAgeMap["张三"] = 19
-	nameAgeMap["李四"] = 23
-	nameAgeMap["狂徒"] = 0
+const base = 769
 
-	nameAgeMap["狂徒"] = 10
-
-	key1 := "张三"
-	value1, ok1 := nameAgeMap[key1] // ok1 为true 时，value1 为对应的值
-	if ok1 {
-		fmt.Println(key1, value1)
-	} else{ 
-		fmt.Println(key1, value1)
-	}
-	for name, age := range nameAgeMap {
-		fmt.Println(name, age)
-	}
+type MyHashSet struct {
+    data []list.List
 }
+
+func Constructor() MyHashSet {
+    return MyHashSet{make([]list.List, base)}
+}
+
+func (s *MyHashSet) hash(key int) int {
+    return key % base
+}
+
+func (s *MyHashSet) Add(key int) {
+    if !s.Contains(key) {
+        h := s.hash(key)
+        s.data[h].PushBack(key)
+    }
+}
+
+func (s *MyHashSet) Remove(key int) {
+    h := s.hash(key)
+    for e := s.data[h].Front(); e != nil; e = e.Next() {
+        if e.Value.(int) == key {
+            s.data[h].Remove(e)
+        }
+    }
+}
+
+func (s *MyHashSet) Contains(key int) bool {
+    h := s.hash(key)
+    for e := s.data[h].Front(); e != nil; e = e.Next() {
+        if e.Value.(int) == key {
+            return true
+        }
+    }
+    return false
+}
+
