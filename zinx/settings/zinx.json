@@ -1,0 +1,11 @@
+{
+  "Name": "zinx_demo",
+  "Mode": "dev",
+  "Start-time": "2023.04.04",
+  "author-name": "邓丽伟",
+  "Version": "0.5",
+  "IPVersion": "tcp4",
+  "Max_packagesize": "40960",
+  "Max_conn": "100",
+  "Host": "127.0.0.1"
+}
