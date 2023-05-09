@@ -24,6 +24,8 @@ type Config struct{
 	Version string// 当前Zinx的版本号
 	MaxConn int // 当前服务器主机允许的最大连接数
 	MaxPackageSize uint32// 当前Zinx框架数据包的最大值
+	WorkerPoolSize uint32 // 当前业务工作Worker池的Goroutine数量
+	MaxWorkerTaskLen uint32 // Zinx框架允许用户最多开辟多少个Worker(限定条件)
 }
 
 var GlobalObject=new(Config) // 定义一个全局的对象
@@ -54,6 +56,8 @@ func init(){
 		Host: "127.0.0.1",
 		MaxConn: 12000,
 		MaxPackageSize: 4096,
+		WorkerPoolSize: 10,
+		MaxWorkerTaskLen: 1024,
 	}
 
 	GlobalObject.Reload()

@@ -19,6 +19,15 @@ type Server struct {
 	Port int
 	// 当前的Server的消息管理模块，用来绑定MsgID和对应的处理业务API关系
 	MsgHandle ziface.IMsgHandle
+
+
+	// 该Server的链接管理器
+	ConnMgr ziface.IConnManager
+
+	// 该Server创建链接之后自动调用Hook函数--OnConnStart
+	OnConnStart func(conn ziface.IConnection)
+	// 该Server销毁链接之前自动调用Hook函数--OnConnStop
+	OnConnStop func(conn ziface.IConnection)
 }
 
 // 路由功能
@@ -35,6 +44,7 @@ func NewServer(name string) ziface.IServer {
 		IP:settings.GlobalObject.Host,
 		Port: settings.GlobalObject.TcpPort, 
 		MsgHandle: NewMsgHandle(),
+		ConnMgr: NewConnManager(),
 	}
 	return s	
 }
@@ -45,6 +55,11 @@ func (s *Server) Start() {
 	
 	// TODO
 	go func(){
+	
+	// 0 开启消息队列及Worker工作池
+	s.MsgHandle.StartWorkerPool()
+
+
 	// 1. 获取一个Tcp的addr
 	addr ,err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 	if err!=nil{
@@ -73,6 +88,12 @@ func (s *Server) Start() {
 			continue
 		}
 		
+		// 判断当前的连接数是否超过最大值
+		if s.ConnMgr.Len() >= settings.GlobalObject.MaxConn {
+			conn.Close()
+			continue
+		}
+		
 		// 将处理新链接的业务方法和conn进行绑定，得到我们的链接模块
 		deal := NewConnection(conn,cid, s.MsgHandle)
 		cid ++
@@ -85,6 +106,9 @@ func (s *Server) Start() {
 // 停止服务器
 func (s *Server) Stop() {
 	// TODO 将服务器的资源，状态或者一些已经开辟的链接信息 进行停止或者回收
+	fmt.Println("[STOP] Zinx server name", s.Name)
+	s.ConnMgr.ClearConn()
+	
 
 }
 
@@ -98,5 +122,32 @@ func (s *Server) Serve() {
 	select{}
 }
 
+func (s *Server) GetConnMgr()*ziface.IConnManager{
+	return &s.ConnMgr
+}
 
+// 注册OnConnStart钩子函数的方法
+func (s *Server) SetOnConnStart(hookFunc func(ziface.IConnection)) {
+	s.OnConnStart = hookFunc
+}
 
+// 注册OnConnStop钩子函数的方法
+func (s *Server) SetOnConnStop(hookFunc func(ziface.IConnection)) {
+	s.OnConnStop = hookFunc
+}
+
+// 调用OnConnStart钩子函数的方法
+func (s *Server) CallOnConnStart(conn ziface.IConnection) {
+	if s.OnConnStart != nil {
+		fmt.Println("---> Call OnConnStart()...")
+		s.OnConnStart(conn)
+	}
+}
+
+// 调用OnConnStop钩子函数的方法
+func (s *Server) CallOnConnStop(conn ziface.IConnection) {
+	if s.OnConnStop != nil {
+		fmt.Println("---> Call OnConnStop()...")
+		s.OnConnStop(conn)
+	}
+}
