@@ -36,7 +36,7 @@ func (h *RecordTimesMinHeap) Pop() interface{} {
 
 
 // 求出现次数前k高的元素
-
+// www.leetcode-cn.com/problems/top-k-frequent-elements/
 func TopKFrequent(nums []int,k int) [] int{
 	numberTimes:= make(map[int]int)  // 次数哈希表,key是数字，value是出现次数
 	n := len(nums) // 数组长度

@@ -2,6 +2,7 @@ package main
 
 import "sort"
 
+// www.leetcode-cn.com/problems/course-schedule-iii/
 func scheduleCourse(course [][]int) int {
 	sort.Slice(course, func(i, j int) bool {
 		return course[i][1] < course[j][1]

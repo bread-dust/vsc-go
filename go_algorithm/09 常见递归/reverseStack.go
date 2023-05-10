@@ -1,5 +1,6 @@
 package main
 
+// www.leetcode-cn.com/problems/reverse-stack-using-recursion/
 func reverse(stack *Stack){
 	if !stack.IsEmpty(){
 		bottom :+ popBottom(stack)

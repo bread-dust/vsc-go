@@ -7,17 +7,19 @@ import (
 	"log"
 )
 
+
 type GobCodec struct {
-	conn io.ReadWriteCloser
+	conn io.ReadWriteCloser // 链接实例,存放tcp字节流
 	buf *bufio.Writer //防止阻塞带缓冲的writer，可以提升性能
-	dec *gob.Decoder
-	enc *gob.Encoder
+	dec *gob.Decoder //解码器
+	enc *gob.Encoder //编码器
 }
 
 
-
+// 确保GobCodec实现了Codec接口
 var _ Codec = (*GobCodec)(nil)
 
+// NewGobCodec 创建一个编解码器
 func NewGobCodec(conn io.ReadWriteCloser) Codec {
 	buf :=bufio.NewWriter(conn)
 	return &GobCodec{
@@ -28,14 +30,17 @@ func NewGobCodec(conn io.ReadWriteCloser) Codec {
 	}
 }
 
+// ReadHeader 读取请求头
 func (c *GobCodec) ReadHeader (h *Header) error  {
 	return c.dec.Decode(h)
 }
 
+// ReadBody 读取请求体
 func (c *GobCodec) ReadBody (body interface{}) error  {
 	return c.dec.Decode(body)
 }
 
+// Write 写入请求头和请求体
 func (c *GobCodec) Write (h *Header,body interface{}) (err error) {
 	defer func(){
 	_ = c.buf.Flush()
@@ -54,6 +59,7 @@ func (c *GobCodec) Write (h *Header,body interface{}) (err error) {
 	return nil
 }
 
+// Close 关闭链接
 func (c *GobCodec) Close() error {
 	return c.conn.Close()
 }

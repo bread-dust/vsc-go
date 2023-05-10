@@ -2,6 +2,7 @@ package main
 
 // 小岛问题
 // 递归
+// http://www.leetcode-cn.com/problems/number-of-islands/
 func numIslands(grid [][]byte)int{
 	islands :=0
 	n := len(grid)

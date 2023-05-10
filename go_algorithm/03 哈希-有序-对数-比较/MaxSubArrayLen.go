@@ -8,6 +8,7 @@
 package main
 
 
+// www.lintcode.com/problem/maximum-size-subarray-sum-equals-k/
 func maxSubArrayLen(nums []int, k int) int {
 	//ans 最大长度
 	//sum 前缀和

@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // 汉诺塔的移动问题
-
+// www.lintcode.com/problem/tower-of-hanoi/
 func Hanoi(n int){
 	if n>0{
 		process3(n,"left","right","mid")

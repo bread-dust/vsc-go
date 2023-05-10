@@ -1,6 +1,6 @@
 package main
 
-
+// www.leetcode-cn.com/problems/na-ying-bi/
 func Pick(){
 	pick := 1
 	for pick <=rest{

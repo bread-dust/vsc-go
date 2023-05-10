@@ -1,7 +1,7 @@
 package main
 
 import "strings"
-
+// www.leetcode-cn.com/problems/replace-words/
 func ReplaceWords(dictionary []string, sentence string) string {
 	root := Constructor()
 	for _, s := range dictionary {

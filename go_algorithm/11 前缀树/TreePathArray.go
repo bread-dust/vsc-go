@@ -1,5 +1,6 @@
 package main
 
+// www.leetcode-cn.com/problems/word-search-ii/
 type Trie struct{
 	next [26]*Trie
 	pass int

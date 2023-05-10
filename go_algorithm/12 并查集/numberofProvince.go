@@ -1,6 +1,7 @@
 package main
 
 //省份问题
+// http://www.leetcode-cn.com/problems/number-of-provinces/
 func findCircleNum(isConnected [][]int)int{
 	n := len(isConnected)
 	uf :=NewUnionFind(n)

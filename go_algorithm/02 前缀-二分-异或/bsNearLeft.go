@@ -9,6 +9,7 @@ package main
 /*
 	有序数组不大于val
 */
+// www.lintcode.com/problem/first-position-of-target/
 func moreEqualMostRight(arr []int, val int) int {
 	if arr == nil || len(arr) == 0 {
 		return -1

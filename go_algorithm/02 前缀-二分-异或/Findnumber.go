@@ -9,6 +9,7 @@ package main
 
 
 // arr 是有序数组，使用二分法
+// www.lintcode.com/problem/search-in-a-big-sorted-array/
 func exist(arr []int, num int) bool {
 	if arr == nil || len(arr) == 0 {
 		return false

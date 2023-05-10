@@ -1,6 +1,6 @@
 package main
 
-
+// www.leetcode-cn.com/problems/maximum-xor-of-two-numbers-in-an-array/
 func (root *Trie)FindMaximumXOR(num int) int {
 	cur := root
 	ans :=0

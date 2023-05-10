@@ -1,7 +1,7 @@
 package main
 
 //不重复数组的全排列
-
+// www.leetcode-cn.com/problems/permutations/
 func permute(nums []int) [][]int{
 	ans:=make([][]int,0)
 	process2(&nums,0,&ans)

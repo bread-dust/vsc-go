@@ -8,6 +8,7 @@
 package main
 
 
+// www.lintcode.com/problem/last-position-of-target/
 func moreEqualMostLeft(arr []int, val int) int {
 	if arr == nil || len(arr) == 0 {
 		return -1
